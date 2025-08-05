@@ -1,0 +1,13 @@
+{
+  "project_type": "godot_csharp",
+  "mandatory_docs": [
+    "代码规范.md",
+    "大地图需求.md"
+  ],
+  "code_style": {
+    "language": "csharp",
+    "naming_convention": "pascal_case",
+    "module_structure": "modular"
+  },
+  "ai_instructions": "在修改任何代码前，必须阅读代码规范.md文件，确保遵循项目约定的目录结构、命名规范和代码风格"
+}

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "fnGKUViPPAQ=",
+  "success": true,
+  "projectFilePath": "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\14286\\.nuget\\packages\\godot.sourcegenerators\\4.4.1\\godot.sourcegenerators.4.4.1.nupkg.sha512",
+    "C:\\Users\\14286\\.nuget\\packages\\godotsharp\\4.4.1\\godotsharp.4.4.1.nupkg.sha512",
+    "C:\\Users\\14286\\.nuget\\packages\\godotsharpeditor\\4.4.1\\godotsharpeditor.4.4.1.nupkg.sha512"
+  ],
+  "logs": []
+}
