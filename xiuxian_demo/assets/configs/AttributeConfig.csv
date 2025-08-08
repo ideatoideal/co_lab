@@ -1,0 +1,8 @@
+AttributeId,AttributeName,AttributeType,BaseValue,GrowthRate,Description,IconPath,SortOrder
+hp,气血,Base,100,20,角色当前生命值,ui/icons/hp.png,1
+mp,法力,Base,50,10,角色当前法力值,ui/icons/mp.png,2
+attack,攻击,Combat,10,2,角色基础攻击力,ui/icons/attack.png,3
+defense,防御,Combat,5,1,角色基础防御力,ui/icons/defense.png,4
+speed,速度,Combat,3,0.5,角色行动速度,ui/icons/speed.png,5
+crit_rate,暴击率,Combat,0.05,0.01,角色暴击概率,ui/icons/crit_rate.png,6
+crit_damage,暴击伤害,Combat,1.5,0.1,暴击时额外伤害倍数,ui/icons/crit_damage.png,7
