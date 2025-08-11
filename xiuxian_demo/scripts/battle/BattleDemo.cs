@@ -6,7 +6,7 @@ using XiuXianDemo.Common;
 
 namespace XiuXianDemo.Battle
 {
-    public class BattleDemo : Node2D
+    public partial class BattleDemo : Node2D
     {
         private BattleManager _battleManager;
 
@@ -28,10 +28,10 @@ namespace XiuXianDemo.Battle
             _battleManager.Initialize(participants);
         }
 
-        public override void _Process(float deltaTime)
+        public override void _Process(double delta)
         {
             // 更新战斗逻辑
-            _battleManager.Update(deltaTime);
+            _battleManager.Update((float)delta);
         }
 
         public override void _Input(InputEvent input)

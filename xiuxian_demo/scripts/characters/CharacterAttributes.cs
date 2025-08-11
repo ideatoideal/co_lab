@@ -205,7 +205,7 @@ namespace XiuxianDemo
                 {
                     // 如果不能相加，则直接设置
                     newValue = value;
-                    GD.PrintWarning($"属性{attributeId}无法进行加法运算，直接设置为新值");
+                    GD.Print($"属性{attributeId}无法进行加法运算，直接设置为新值");
                 }
 
                 _attributes[attributeId] = newValue;
@@ -263,7 +263,7 @@ namespace XiuxianDemo
                 {
                     // 如果不能相加，则直接设置
                     newValue = value;
-                    GD.PrintWarning($"属性{cacheKey}无法进行加法运算，直接设置为新值");
+                    GD.Print($"属性{cacheKey}无法进行加法运算，直接设置为新值");
                 }
 
                 _attributes[cacheKey] = newValue;

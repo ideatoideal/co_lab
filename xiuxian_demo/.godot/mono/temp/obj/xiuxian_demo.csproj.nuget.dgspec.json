@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {}
+    "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {}
   },
   "projects": {
-    "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {
+    "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
+        "projectUniqueName": "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
         "projectName": "xiuxian_demo",
-        "projectPath": "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
+        "projectPath": "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
         "packagesPath": "C:\\Users\\14286\\.nuget\\packages\\",
-        "outputPath": "D:\\mywork\\co_lab\\xiuxian_demo\\.godot\\mono\\temp\\obj\\",
+        "outputPath": "d:\\mywork\\co_lab\\xiuxian_demo\\.godot\\mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

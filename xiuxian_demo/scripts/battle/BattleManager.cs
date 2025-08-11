@@ -171,7 +171,7 @@ namespace XiuXianDemo.Battle
             if (input is InputEventKey keyEvent && keyEvent.Pressed)
             {
                 // 简化实现，实际应该有更复杂的输入处理逻辑
-                if (keyEvent.Scancode == (int)KeyList.Space)
+                if (keyEvent.Keycode == Key.Space)
                 {
                     // 假设空格键释放第一个技能
                     var player = _participants.FirstOrDefault(p => p.IsPlayer);

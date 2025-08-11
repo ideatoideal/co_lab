@@ -7,7 +7,7 @@ namespace XiuxianDemo
     /// <summary>
     /// 角色属性系统演示类
     /// </summary>
-    public class CharacterDemo : Node
+    public partial class CharacterDemo : Node
     {
         private CharacterAttributes _characterAttributes;
 
@@ -75,7 +75,7 @@ namespace XiuxianDemo
                 {
                     Id = "health",
                     Name = "生命值",
-                    Type = AttributeType.Battle,
+                    Type = AttributeType.Combat,
                     BaseValue = 100,
                     GrowthRate = 15.0f,
                     SortOrder = 4
@@ -84,7 +84,7 @@ namespace XiuxianDemo
                 {
                     Id = "damage",
                     Name = "攻击力",
-                    Type = AttributeType.Battle,
+                    Type = AttributeType.Combat,
                     BaseValue = 20,
                     GrowthRate = 5.0f,
                     SortOrder = 5
@@ -122,7 +122,7 @@ namespace XiuxianDemo
 
             // 添加属性值
             GD.Print("增加攻击力 10");
-            _characterAttributes.AddAttribute("damage", 10, AttributeType.Battle);
+            _characterAttributes.AddAttribute("damage", 10, AttributeType.Combat);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace XiuxianDemo
             object strength = _characterAttributes.GetAttribute("strength");
             GD.Print($"力量: {strength}");
 
-            object damage = _characterAttributes.GetAttribute("damage", AttributeType.Battle);
+            object damage = _characterAttributes.GetAttribute("damage", AttributeType.Combat);
             GD.Print($"攻击力: {damage}");
 
             // 查询所有属性
@@ -149,7 +149,7 @@ namespace XiuxianDemo
 
             // 按类型查询属性
             GD.Print("\n战斗属性:");
-            Dictionary<string, object> battleAttributes = _characterAttributes.GetAttributesByType(AttributeType.Battle);
+            Dictionary<string, object> battleAttributes = _characterAttributes.GetAttributesByType(AttributeType.Combat);
             foreach (var kvp in battleAttributes)
             {
                 GD.Print($"{kvp.Key}: {kvp.Value}");
