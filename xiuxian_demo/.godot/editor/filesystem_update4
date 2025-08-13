@@ -1,7 +1,3 @@
-res://scripts/tests/characters/CharacterAttributesGdUnitTest.cs
-res://addons/gdUnit4/src/dotnet/GdUnit4CSharpApi.cs
-res://scripts/ui/CameraController.cs
-res://scripts/characters/CharacterDemo.cs
-res://scripts/characters/Player.cs
-res://scripts/battle/BattleDemo.cs
-res://scripts/maps/WorldMapManager.cs
+res://scenes/main.tscn
+res://scenes/characters/Player.tscn
+res://scenes/maps/WorldMap.tscn

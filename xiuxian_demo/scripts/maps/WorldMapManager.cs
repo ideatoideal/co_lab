@@ -112,10 +112,9 @@ namespace XiuxianDemo
             float maxY = MapSize.Y - screenSize.Y / 2;
             
             // 限制玩家在地图边界内
-            playerPos.X = Mathf.Clamp(playerPos.X, minX, maxX);
-            playerPos.Y = Mathf.Clamp(playerPos.Y, minY, maxY);
-            
-            _player.GlobalPosition = playerPos; // 更新玩家位置
+            float clampedX = Mathf.Clamp(playerPos.X, Mathf.Min(minX, maxX), Mathf.Max(minX, maxX));
+            float clampedY = Mathf.Clamp(playerPos.Y, Mathf.Min(minY, maxY), Mathf.Max(minY, maxY));
+            _player.GlobalPosition = new Vector2(clampedX, clampedY);
         }
         
         /// <summary>
