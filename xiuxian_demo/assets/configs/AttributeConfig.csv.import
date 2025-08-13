@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://c1rhrywauritm"
+
+[deps]
+
+files=["res://assets/configs/AttributeConfig.AttributeName.translation", "res://assets/configs/AttributeConfig.AttributeType.translation", "res://assets/configs/AttributeConfig.BaseValue.translation", "res://assets/configs/AttributeConfig.GrowthRate.translation", "res://assets/configs/AttributeConfig.Description.translation", "res://assets/configs/AttributeConfig.IconPath.translation", "res://assets/configs/AttributeConfig.SortOrder.translation"]
+
+source_file="res://assets/configs/AttributeConfig.csv"
+dest_files=["res://assets/configs/AttributeConfig.AttributeName.translation", "res://assets/configs/AttributeConfig.AttributeType.translation", "res://assets/configs/AttributeConfig.BaseValue.translation", "res://assets/configs/AttributeConfig.GrowthRate.translation", "res://assets/configs/AttributeConfig.Description.translation", "res://assets/configs/AttributeConfig.IconPath.translation", "res://assets/configs/AttributeConfig.SortOrder.translation"]
+
+[params]
+
+compress=true
+delimiter=0

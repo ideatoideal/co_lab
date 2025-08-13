@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using XiuXianDemo.Common;
 
 namespace XiuXianDemo.Battle.Skills
 {

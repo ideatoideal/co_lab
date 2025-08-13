@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bmahr2htc8fox"
+
+[deps]
+
+files=["res://assets/configs/LevelConfig.ExpToNextLevel.translation", "res://assets/configs/LevelConfig.HpGrowthBonus.translation", "res://assets/configs/LevelConfig.MpGrowthBonus.translation", "res://assets/configs/LevelConfig.AttackGrowthBonus.translation", "res://assets/configs/LevelConfig.DefenseGrowthBonus.translation", "res://assets/configs/LevelConfig.SpeedGrowthBonus.translation", "res://assets/configs/LevelConfig.UnlockFeature.translation"]
+
+source_file="res://assets/configs/LevelConfig.csv"
+dest_files=["res://assets/configs/LevelConfig.ExpToNextLevel.translation", "res://assets/configs/LevelConfig.HpGrowthBonus.translation", "res://assets/configs/LevelConfig.MpGrowthBonus.translation", "res://assets/configs/LevelConfig.AttackGrowthBonus.translation", "res://assets/configs/LevelConfig.DefenseGrowthBonus.translation", "res://assets/configs/LevelConfig.SpeedGrowthBonus.translation", "res://assets/configs/LevelConfig.UnlockFeature.translation"]
+
+[params]
+
+compress=true
+delimiter=0

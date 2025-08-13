@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {}
+    "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {}
   },
   "projects": {
-    "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {
+    "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
+        "projectUniqueName": "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
         "projectName": "xiuxian_demo",
-        "projectPath": "d:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
+        "projectPath": "D:\\mywork\\co_lab\\xiuxian_demo\\xiuxian_demo.csproj",
         "packagesPath": "C:\\Users\\14286\\.nuget\\packages\\",
-        "outputPath": "d:\\mywork\\co_lab\\xiuxian_demo\\.godot\\mono\\temp\\obj\\",
+        "outputPath": "D:\\mywork\\co_lab\\xiuxian_demo\\.godot\\mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -35,6 +35,9 @@
           }
         },
         "warningProperties": {
+          "noWarn": [
+            "NU1605"
+          ],
           "warnAsError": [
             "NU1605"
           ]
@@ -61,6 +64,24 @@
             "GodotSharpEditor": {
               "target": "Package",
               "version": "[4.4.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.14.1, )"
+            },
+            "gdUnit4.analyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "None",
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "gdUnit4.api": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "gdUnit4.test.adapter": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             }
           },
           "imports": [

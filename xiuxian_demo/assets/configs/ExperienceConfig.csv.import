@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cwhxrrr8bxusu"
+
+[deps]
+
+files=["res://assets/configs/ExperienceConfig.Id.translation", "res://assets/configs/ExperienceConfig.Level.translation", "res://assets/configs/ExperienceConfig.BaseExp.translation", "res://assets/configs/ExperienceConfig.ExpMultiplier.translation", "res://assets/configs/ExperienceConfig.Description.translation"]
+
+source_file="res://assets/configs/ExperienceConfig.csv"
+dest_files=["res://assets/configs/ExperienceConfig.Id.translation", "res://assets/configs/ExperienceConfig.Level.translation", "res://assets/configs/ExperienceConfig.BaseExp.translation", "res://assets/configs/ExperienceConfig.ExpMultiplier.translation", "res://assets/configs/ExperienceConfig.Description.translation"]
+
+[params]
+
+compress=true
+delimiter=0
