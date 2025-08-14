@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cdjno7rgp7b57" path="res://assets/sprites/maps/main_map.png" id="3_main_map"]
 
 [node name="WorldMap" type="Node2D"]
+position = Vector2(-14, -5)
 script = ExtResource("2_worldmap_manager")
 MapSize = null
 MapBoundsColor = null

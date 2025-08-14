@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1755078836
+::res://::1755164652
 .trae-config.json::JSON/JSON::-1::1754379024::0::1::::<><><>0<>0<><>::
 .trae_instructions.md::TextFile/TextFile::-1::1754379261::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D/CompressedTexture2D::1902653213084156956::1754377014::1754377023::1::::<><><>0<>0<>547374fa3bd5710dee2c7765221e58a8<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
@@ -359,12 +359,12 @@ UI界面系统.md::TextFile/TextFile::-1::1754472218::0::1::::<><><>0<>0<><>::
 核心玩法设定.md::TextFile/TextFile::-1::1754445131::0::1::::<><><>0<>0<><>::
 ::res://docs/美术/::1754474093
 配色方案.md::TextFile/TextFile::-1::1754474220::0::1::::<><><>0<>0<><>::
-::res://scenes/::1755078701
-main.tscn::PackedScene::1828618719347781960::1755078701::0::1::::<><><>0<>0<><>::uid://b1t2m3n4o5p6q::::res://scenes/maps/WorldMap.tscn
-::res://scenes/characters/::1755078701
-Player.tscn::PackedScene::4233779643426521701::1755078701::0::1::::<><><>0<>0<><>::uid://u0735voj55vx::::res://scripts/characters/Player.cs<>uid://d2v3w4x5y600a::::res://assets/sprites/characters/player.png<>uid://c4bdg8xuk06sp::::res://scripts/ui/CameraController.cs
-::res://scenes/maps/::1755078702
-WorldMap.tscn::PackedScene::4252216076014427034::1755078702::0::1::::<><><>0<>0<><>::uid://b1k4y5m8q3yaf::::res://scenes/characters/Player.tscn<>uid://c6ft183tcjb1l::::res://scripts/maps/WorldMapManager.cs<>uid://cdjno7rgp7b57::::res://assets/sprites/maps/main_map.png
+::res://scenes/::1755164857
+main.tscn::PackedScene/PackedScene::1828618719347781960::1755164857::0::1::::<><><>0<>0<><>::uid://b1t2m3n4o5p6q::::res://scenes/maps/WorldMap.tscn
+::res://scenes/characters/::1755164857
+Player.tscn::PackedScene/PackedScene::4233779643426521701::1755164857::0::1::::<><><>0<>0<><>::uid://u0735voj55vx::::res://scripts/characters/Player.cs<>uid://d2v3w4x5y600a::::res://assets/sprites/characters/player.png<>uid://c4bdg8xuk06sp::::res://scripts/ui/CameraController.cs
+::res://scenes/maps/::1755164858
+WorldMap.tscn::PackedScene/PackedScene::4252216076014427034::1755164858::0::1::::<><><>0<>0<><>::uid://b1k4y5m8q3yaf::::res://scenes/characters/Player.tscn<>uid://c6ft183tcjb1l::::res://scripts/maps/WorldMapManager.cs<>uid://cdjno7rgp7b57::::res://assets/sprites/maps/main_map.png
 ::res://scripts/::1755051018
 ::res://scripts/battle/::1755052958
 AIState.cs::CSharpScript/CSharpScript::7283335706660350867::1754618399::0::1::::<><><>0<>0<><>::

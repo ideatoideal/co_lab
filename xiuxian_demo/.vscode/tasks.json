@@ -1,16 +1,18 @@
+
 {
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "pre_build",
             "command": "C:/Program Files/Godot/Godot.exe",
             "type": "process",
             "args": [
+                "--editor",
                 "--build-solutions",
+                "--quit",
+                "--headless",
                 "--path",
-                "${workspaceRoot}",
-                "--no-window",
-                "-q"
+                "${workspaceRoot}"
             ],
             "problemMatcher": "$msCompile"
         }
