@@ -1,25 +1,31 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
-    /// 经验系统实现类，处理经验相关的逻辑
+    /// 经验系统实现
     /// </summary>
     public class ExperienceSystem : IExperienceSystem
     {
-        private float _totalExperience = 0;
-        private float _levelExperience = 0;
+        private float _currentExperience = 0f;
         private ILevelSystem _levelSystem;
 
-        // 可配置的经验计算公式
-        public Func<int, float> GetRequiredExperience { get; set; }
+        /// <summary>
+        /// 当前经验值
+        /// </summary>
+        public float CurrentExperience => _currentExperience;
 
-        // 总经验
-        public float TotalExperience => _totalExperience;
+        /// <summary>
+        /// 经验值变化事件
+        /// </summary>
+        public event Action<float> OnExperienceChanged;
 
-        // 当前等级经验
-        public float LevelExperience => _levelExperience;
+        /// <summary>
+        /// 升级事件
+        /// </summary>
+        public event Action<int> OnLevelUp;
 
         /// <summary>
         /// 构造函数
@@ -27,62 +33,73 @@ namespace XiuxianDemo
         /// <param name="levelSystem">等级系统</param>
         public ExperienceSystem(ILevelSystem levelSystem)
         {
-            _levelSystem = levelSystem;
-            // 默认经验公式
-            GetRequiredExperience = level => level * 100 + 50;
+            _levelSystem = levelSystem ?? throw new ArgumentNullException(nameof(levelSystem));
         }
 
-        // 获取总经验
-        public float GetTotalExperience()
-        {
-            return _totalExperience;
-        }
-
-        // 获取当前等级经验
-        public float GetLevelExperience()
-        {
-            return _levelExperience;
-        }
-
-        // 添加经验
+        /// <summary>
+        /// 添加经验
+        /// </summary>
+        /// <param name="amount">经验值</param>
         public void AddExperience(float amount)
         {
-            if (amount < 0)
+            if (amount <= 0)
+            {
+                GD.PrintErr("经验值必须大于0");
+                return;
+            }
+
+            _currentExperience += amount;
+            OnExperienceChanged?.Invoke(_currentExperience);
+
+            CheckLevelUp();
+        }
+
+        /// <summary>
+        /// 获取下一级所需经验
+        /// </summary>
+        /// <returns>所需经验值</returns>
+        public float GetExperienceToNextLevel()
+        {
+            return _levelSystem.GetExperienceRequired(_levelSystem.CurrentLevel);
+        }
+
+        /// <summary>
+        /// 检查并处理升级
+        /// </summary>
+        private void CheckLevelUp()
+        {
+            while (_levelSystem.CanLevelUp((int)_currentExperience))
+            {
+                int requiredExp = _levelSystem.GetExperienceRequired(_levelSystem.CurrentLevel);
+                if (_currentExperience >= requiredExp)
+                {
+                    _currentExperience -= requiredExp;
+                    int newLevel = _levelSystem.LevelUp();
+                    OnLevelUp?.Invoke(newLevel);
+                    GD.Print($"恭喜升级到 {newLevel} 级！");
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置当前经验（调试用）
+        /// </summary>
+        /// <param name="experience">经验值</param>
+        public void SetCurrentExperience(float experience)
+        {
+            if (experience < 0)
             {
                 GD.PrintErr("经验值不能为负数");
                 return;
             }
 
-            _totalExperience += amount;
-            _levelExperience += amount;
-
-            // 检查是否可以升级
-            while (_levelSystem.CanLevelUp())
-            {
-                _levelSystem.LevelUp();
-                _levelExperience = 0;
-            }
-        }
-
-        // 计算升级所需经验
-        public float CalculateRequiredExperience(int level)
-        {
-            if (level < 1)
-            {
-                GD.PrintErr("等级不能小于1");
-                return 0;
-            }
-
-            return GetRequiredExperience(level);
-        }
-
-        // 升级
-        public void LevelUp()
-        {
-            if (_levelSystem.LevelUp())
-            {
-                _levelExperience = 0;
-            }
+            _currentExperience = experience;
+            OnExperienceChanged?.Invoke(_currentExperience);
+            CheckLevelUp();
         }
     }
 }

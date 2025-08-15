@@ -1,19 +1,23 @@
-using System;
-
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
     /// 属性类型枚举
     /// </summary>
     public enum AttributeType
     {
-        // 基础属性
+        /// <summary>
+        /// 基础属性
+        /// </summary>
         Base,
-        // 战斗属性
+
+        /// <summary>
+        /// 战斗属性
+        /// </summary>
         Combat,
-        // 成长属性
-        Growth,
-        // 特殊属性
+
+        /// <summary>
+        /// 特殊属性
+        /// </summary>
         Special
     }
 }

@@ -98,6 +98,103 @@ namespace XiuXianDemo.Common
         }
 
         /// <summary>
+        /// 通用CSV配置加载方法，将CSV文件映射到指定类型的对象列表
+        /// </summary>
+        /// <typeparam name="T">目标对象类型</typeparam>
+        /// <param name="filePath">CSV文件路径</param>
+        /// <param name="mapper">CSV行数据到对象的映射函数</param>
+        /// <returns>映射后的对象列表</returns>
+        public List<T> LoadConfig<T>(string filePath, Func<string[], string[], T> mapper)
+        {
+            List<T> result = new List<T>();
+
+            Godot.FileAccess file = Godot.FileAccess.Open(filePath, Godot.FileAccess.ModeFlags.Read);
+            if (file == null)
+            {
+                GD.PrintErr($"无法打开CSV文件: {filePath}");
+                return result;
+            }
+
+            // 读取标题行
+            string headerLine = file.GetLine();
+            string[] headers = headerLine.Split(',');
+
+            // 读取数据行
+            while (file.GetPosition() < file.GetLength())
+            {
+                string line = file.GetLine();
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                string[] values = line.Split(',');
+                if (values.Length >= headers.Length)
+                {
+                    T obj = mapper(headers, values);
+                    if (obj != null)
+                    {
+                        result.Add(obj);
+                    }
+                }
+            }
+
+            file.Close();
+            GD.Print($"已加载 {result.Count} 条配置数据从文件: {filePath}");
+            return result;
+        }
+
+        /// <summary>
+        /// 通用CSV配置加载方法，将CSV文件映射到指定类型的对象字典
+        /// </summary>
+        /// <typeparam name="TKey">字典键类型</typeparam>
+        /// <typeparam name="TValue">字典值类型</typeparam>
+        /// <param name="filePath">CSV文件路径</param>
+        /// <param name="keySelector">键选择函数</param>
+        /// <param name="valueSelector">值选择函数</param>
+        /// <returns>映射后的对象字典</returns>
+        public Dictionary<TKey, TValue> LoadConfigDictionary<TKey, TValue>(string filePath, Func<string[], string[], TKey> keySelector, Func<string[], string[], TValue> valueSelector)
+        {
+            Dictionary<TKey, TValue> result = new Dictionary<TKey, TValue>();
+
+            Godot.FileAccess file = Godot.FileAccess.Open(filePath, Godot.FileAccess.ModeFlags.Read);
+            if (file == null)
+            {
+                GD.PrintErr($"无法打开CSV文件: {filePath}");
+                return result;
+            }
+
+            // 读取标题行
+            string headerLine = file.GetLine();
+            string[] headers = headerLine.Split(',');
+
+            // 读取数据行
+            while (file.GetPosition() < file.GetLength())
+            {
+                string line = file.GetLine();
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                string[] values = line.Split(',');
+                if (values.Length >= headers.Length)
+                {
+                    TKey key = keySelector(headers, values);
+                    TValue value = valueSelector(headers, values);
+                    if (!result.ContainsKey(key))
+                    {
+                        result[key] = value;
+                    }
+                    else
+                    {
+                        GD.PrintErr($"发现重复键 '{key}' 在文件 '{filePath}' 中");
+                    }
+                }
+            }
+
+            file.Close();
+            GD.Print($"已加载 {result.Count} 条配置数据到字典从文件: {filePath}");
+            return result;
+        }
+
+        /// <summary>
         /// 根据字段名获取对应的值
         /// </summary>
         /// <param name="fields">字段名数组</param>

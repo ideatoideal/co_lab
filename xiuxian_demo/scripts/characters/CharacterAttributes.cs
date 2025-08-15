@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
     /// 角色属性系统核心类，管理角色的所有属性
@@ -332,17 +332,22 @@ namespace XiuxianDemo
         // 计算属性值
         private object CalculateAttributeValue(AttributeDefinition definition)
         {
-            if (definition.BaseValue is int baseInt)
+            float currentLevel = _levelSystem.CurrentLevel;
+            
+            if (definition.BaseValue is int)
             {
-                return baseInt + (int)(_levelSystem.GetCurrentLevel() * definition.GrowthRate);
+                int baseInt = (int)definition.BaseValue;
+                return (float)baseInt + (currentLevel * definition.GrowthRate);
             }
-            else if (definition.BaseValue is float baseFloat)
+            else if (definition.BaseValue is float)
             {
-                return baseFloat + (_levelSystem.GetCurrentLevel() * definition.GrowthRate);
+                float baseFloat = (float)definition.BaseValue;
+                return baseFloat + (currentLevel * definition.GrowthRate);
             }
-            else if (definition.BaseValue is double baseDouble)
+            else if (definition.BaseValue is double)
             {
-                return baseDouble + (_levelSystem.GetCurrentLevel() * definition.GrowthRate);
+                double baseDouble = (double)definition.BaseValue;
+                return (float)baseDouble + (currentLevel * definition.GrowthRate);
             }
             else
             {
@@ -360,7 +365,13 @@ namespace XiuxianDemo
         // 获取当前等级
         public int GetCurrentLevel()
         {
-            return _levelSystem.GetCurrentLevel();
+            return _levelSystem.CurrentLevel;
+        }
+
+        // 触发等级提升事件
+        private void TriggerLevelUp(int newLevel)
+        {
+            OnLevelUp?.Invoke(newLevel, _attributes);
         }
     }
 }

@@ -1,8 +1,9 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using XiuXianDemo.Common;
 
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
     /// 角色属性系统演示类
@@ -41,58 +42,43 @@ namespace XiuxianDemo
             _characterAttributes.OnAttributeChanged += OnAttributeChanged;
             _characterAttributes.OnSystemInitialized += OnSystemInitialized;
 
-            // 定义属性列表
-            List<AttributeDefinition> attributeDefinitions = new List<AttributeDefinition>
-            {
-                new AttributeDefinition
-                {
-                    Id = "strength",
-                    Name = "力量",
-                    Type = AttributeType.Base,
-                    BaseValue = 10,
-                    GrowthRate = 2.5f,
-                    SortOrder = 1
-                },
-                new AttributeDefinition
-                {
-                    Id = "agility",
-                    Name = "敏捷",
-                    Type = AttributeType.Base,
-                    BaseValue = 8,
-                    GrowthRate = 2.0f,
-                    SortOrder = 2
-                },
-                new AttributeDefinition
-                {
-                    Id = "intelligence",
-                    Name = "智力",
-                    Type = AttributeType.Base,
-                    BaseValue = 6,
-                    GrowthRate = 1.5f,
-                    SortOrder = 3
-                },
-                new AttributeDefinition
-                {
-                    Id = "health",
-                    Name = "生命值",
-                    Type = AttributeType.Combat,
-                    BaseValue = 100,
-                    GrowthRate = 15.0f,
-                    SortOrder = 4
-                },
-                new AttributeDefinition
-                {
-                    Id = "damage",
-                    Name = "攻击力",
-                    Type = AttributeType.Combat,
-                    BaseValue = 20,
-                    GrowthRate = 5.0f,
-                    SortOrder = 5
-                }
-            };
+            // 从CSV配置文件读取属性定义
+            List<AttributeDefinition> attributeDefinitions = LoadAttributeDefinitionsFromCsv();
 
             // 初始化属性
             _characterAttributes.InitializeAttributes(attributeDefinitions);
+        }
+
+        /// <summary>
+        /// 从CSV配置文件加载属性定义
+        /// </summary>
+        /// <returns>属性定义列表</returns>
+        private List<AttributeDefinition> LoadAttributeDefinitionsFromCsv()
+        {
+            string csvPath = "res://assets/configs/AttributeConfig.csv";
+
+            // 使用ConfigManager的通用CSV加载方法
+            return ConfigManager.Instance.LoadConfig<AttributeDefinition>(csvPath, (headers, values) =>
+            {
+                if (values.Length < 7)
+                {
+                    GD.PrintErr("CSV行格式不正确: " + string.Join(',', values));
+                    return null;
+                }
+
+                // 创建属性定义
+                return new AttributeDefinition
+                {
+                    Id = values[0].Trim(),
+                    Name = values[1].Trim(),
+                    Type = values[2].Trim() == "Base" ? AttributeType.Base : AttributeType.Combat,
+                    BaseValue = float.Parse(values[3].Trim()),
+                    GrowthRate = float.Parse(values[4].Trim()),
+                    Description = values[5].Trim(),
+                    IconPath = values[6].Trim(),
+                    SortOrder = int.Parse(values[7].Trim())
+                };
+            });
         }
 
         /// <summary>
@@ -117,12 +103,12 @@ namespace XiuxianDemo
             GD.Print("\n=== 修改属性 ===");
 
             // 设置属性值
-            GD.Print("设置力量为 25");
-            _characterAttributes.SetAttribute("strength", 25);
+            GD.Print("设置攻击为 25");
+            _characterAttributes.SetAttribute("attack", 25);
 
             // 添加属性值
-            GD.Print("增加攻击力 10");
-            _characterAttributes.AddAttribute("damage", 10, AttributeType.Combat);
+            GD.Print("增加防御 10");
+            _characterAttributes.AddAttribute("defense", 10, AttributeType.Combat);
         }
 
         /// <summary>
@@ -133,11 +119,11 @@ namespace XiuxianDemo
             GD.Print("\n=== 查询属性 ===");
 
             // 查询单个属性
-            object strength = _characterAttributes.GetAttribute("strength");
-            GD.Print($"力量: {strength}");
+            object attack = _characterAttributes.GetAttribute("attack");
+            GD.Print($"攻击: {attack}");
 
-            object damage = _characterAttributes.GetAttribute("damage", AttributeType.Combat);
-            GD.Print($"攻击力: {damage}");
+            object defense = _characterAttributes.GetAttribute("defense", AttributeType.Combat);
+            GD.Print($"防御: {defense}");
 
             // 查询所有属性
             GD.Print("\n所有属性:");

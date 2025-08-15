@@ -1,174 +1,233 @@
 using Godot;
 using System;
-using Godot;
+using System.Collections.Generic;
 
-using Mathf = Godot.Mathf;
-
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
-    /// 玩家角色控制器类
-    /// 处理玩家输入、移动逻辑、碰撞检测和精灵方向
+    /// 玩家角色类
     /// </summary>
     public partial class Player : CharacterBody2D
     {
-        /// <summary>
-        /// 正常移动速度
-        /// </summary>
-        [Export]
-        public float MoveSpeed { get; set; } = 200.0f;
+        [Export] public float Speed { get; set; } = 300.0f;
         
-        /// <summary>
-        /// 冲刺移动速度
-        /// </summary>
-        [Export]
-        public float SprintSpeed { get; set; } = 350.0f;
-        
-        /// <summary>
-        /// 当前移动速度（根据是否冲刺动态变化）
-        /// </summary>
-        private float _currentSpeed;
-
-        /// <summary>
-        /// 输入方向向量
-        /// </summary>
-        private Vector2 _inputDirection = Vector2.Zero;
-
-        /// <summary>
-        /// 角色精灵节点引用
-        /// </summary>
+        private CharacterAttributes _attributes;
         private Sprite2D _sprite;
-
-        /// <summary>
-        /// 动画播放器引用
-        /// </summary>
         private AnimationPlayer _animationPlayer;
+        private Label _nameLabel;
+        private ProgressBar _hpBar;
+        private ProgressBar _mpBar;
 
         /// <summary>
-        /// 节点就绪时调用的方法
-        /// 初始化角色属性、获取子节点引用
+        /// 角色名称
         /// </summary>
+        [Export] public string CharacterName { get; set; } = "Player";
+
+        /// <summary>
+        /// 角色属性系统
+        /// </summary>
+        public CharacterAttributes Attributes => _attributes;
+
         public override void _Ready()
         {
-            _currentSpeed = MoveSpeed; // 初始化为正常移动速度
-            _sprite = GetNode<Sprite2D>("Sprite2D"); // 获取精灵节点
-            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer"); // 获取动画播放器
-
-            // 确保相机跟随
-            Camera2D camera = GetNode<Camera2D>("Camera2D");
-            if (camera != null)
-            {
-                camera.MakeCurrent(); // 设置当前相机
-            }
+            InitializeComponents();
+            InitializeAttributes();
+            SetupUI();
         }
-        
-        /// <summary>
-        /// 物理帧更新方法
-        /// 每帧调用，处理输入、移动和精灵方向
-        /// </summary>
-        /// <param name="delta">时间增量，自上一帧以来的时间</param>
+
+        private void InitializeComponents()
+        {
+            _sprite = GetNode<Sprite2D>("Sprite2D");
+            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+            _nameLabel = GetNode<Label>("UI/NameLabel");
+            _hpBar = GetNode<ProgressBar>("UI/HPBar");
+            _mpBar = GetNode<ProgressBar>("UI/MPBar");
+        }
+
+        private void InitializeAttributes()
+        {
+            _attributes = new CharacterAttributes();
+            
+            // 连接属性变化事件
+            _attributes.OnAttributeChanged += (attributeId, oldValue, newValue) => {
+                if (attributeId.ToLower() == "hp" || attributeId.ToLower() == "health")
+                {
+                    UpdateHealthUI();
+                }
+                else if (attributeId.ToLower() == "mp" || attributeId.ToLower() == "mana")
+                {
+                    UpdateManaUI();
+                }
+            };
+            
+            _attributes.OnLevelUp += (newLevel, attributeChanges) => {
+                GD.Print($"玩家升级到 {newLevel} 级！");
+                // 可以在这里添加升级特效或其他逻辑
+            };
+        }
+
+        private void SetupUI()
+        {
+            if (_nameLabel != null)
+                _nameLabel.Text = CharacterName;
+            
+            UpdateHealthUI();
+            UpdateManaUI();
+        }
+
         public override void _PhysicsProcess(double delta)
         {
-            HandleInput(); // 处理玩家输入
-            HandleMovement(delta); // 处理移动逻辑
-            UpdateSpriteDirection(); // 更新精灵方向
+            HandleMovement();
         }
-        
-        /// <summary>
-        /// 处理玩家输入
-        /// 检测键盘输入并更新输入方向向量
-        /// </summary>
-        private void HandleInput()
-        {
-            _inputDirection = Vector2.Zero; // 重置输入方向
 
-            // 获取输入方向
-            if (Input.IsActionPressed("ui_up"))
-            {
-                _inputDirection.Y -= 1;
-                GD.Print("上方向键被按下");
-            }
-            if (Input.IsActionPressed("ui_down"))
-            {
-                _inputDirection.Y += 1;
-                GD.Print("下方向键被按下");
-            }
-            if (Input.IsActionPressed("ui_left"))
-            {
-                _inputDirection.X -= 1;
-                GD.Print("左方向键被按下");
-            }
+        private void HandleMovement()
+        {
+            Vector2 velocity = Vector2.Zero;
+
             if (Input.IsActionPressed("ui_right"))
-            {
-                _inputDirection.X += 1;
-                GD.Print("右方向键被按下");
-            }
+                velocity.X += 1.0f;
+            if (Input.IsActionPressed("ui_left"))
+                velocity.X -= 1.0f;
+            if (Input.IsActionPressed("ui_down"))
+                velocity.Y += 1.0f;
+            if (Input.IsActionPressed("ui_up"))
+                velocity.Y -= 1.0f;
 
-            // 归一化输入向量，确保斜向移动速度与轴向移动速度一致
-            if (_inputDirection.Length() > 0)
+            if (velocity.Length() > 0)
             {
-                _inputDirection = _inputDirection.Normalized();
-                GD.Print("输入方向: " + _inputDirection);
-            }
-
-            // 处理冲刺状态
-            if (Input.IsActionPressed("sprint"))
-            {
-                _currentSpeed = SprintSpeed;
-                GD.Print("冲刺状态激活，速度: " + _currentSpeed);
+                velocity = velocity.Normalized() * Speed;
+                PlayAnimation("walk");
             }
             else
             {
-                _currentSpeed = MoveSpeed;
-                GD.Print("正常速度: " + _currentSpeed);
+                PlayAnimation("idle");
             }
-        }
-        
-        /// <summary>
-        /// 处理角色移动
-        /// 根据输入方向和速度更新角色位置
-        /// </summary>
-        /// <param name="delta">时间增量，自上一帧以来的时间</param>
-        private void HandleMovement(double delta)
-        {
-            if (_inputDirection.Length() > 0)
-            {
-                Vector2 velocity = _inputDirection * _currentSpeed; // 计算移动速度
-                Velocity = velocity; // 设置角色速度
-                GD.Print("移动速度: " + velocity);
-                MoveAndSlide(); // 应用移动并处理碰撞
-            }
-            else
-            {
-                Velocity = Vector2.Zero; // 停止移动
-                GD.Print("静止不动");
-            }
-        }
-        
-        /// <summary>
-        /// 更新精灵方向
-        /// 根据移动方向调整精灵的朝向
-        /// </summary>
-        private void UpdateSpriteDirection()
-        {
-            if (_sprite == null) return; // 检查精灵是否存在
 
-            if (_inputDirection.Length() > 0)
+            Velocity = velocity;
+            MoveAndSlide();
+        }
+
+        private void PlayAnimation(string animationName)
+        {
+            if (_animationPlayer != null && _animationPlayer.HasAnimation(animationName))
             {
-                // 根据移动方向设置精灵方向
-                if (Mathf.Abs(_inputDirection.X) > Mathf.Abs(_inputDirection.Y))
+                if (_animationPlayer.CurrentAnimation != animationName)
                 {
-                    // 左右方向优先
-                    _sprite.FlipH = _inputDirection.X > 0; // 当X轴输入为正时翻转精灵
+                    _animationPlayer.Play(animationName);
                 }
-                // 对于上下方向，保持精灵方向不变
             }
-            // else
-            // {
-            //     // 静止状态，显示最后一个方向的动画帧
-            //     // 暂时注释，因为没有配置动画
-            //     // _animationPlayer.Play("idle");
-            // }
+        }
+
+        // 移除旧的事件处理方法
+        // private void OnAttributeChanged(string attributeId, float oldValue, float newValue)
+        // {
+        //     switch (attributeId.ToLower())
+        //     {
+        //         case "hp":
+        //         case "health":
+        //             UpdateHealthUI();
+        //             break;
+        //         case "mp":
+        //         case "mana":
+        //             UpdateManaUI();
+        //             break;
+        //     }
+        // }
+
+        // private void OnLevelUp(int newLevel)
+        // {
+        //     GD.Print($"玩家升级到 {newLevel} 级！");
+        //     // 可以在这里添加升级特效或其他逻辑
+        // }
+
+        private void UpdateHealthUI()
+        {
+            if (_hpBar != null && _attributes != null)
+            {
+                float maxHp = (float)_attributes.GetAttribute("hp");
+                float currentHp = (float)_attributes.GetAttribute("hp");
+                _hpBar.MaxValue = maxHp;
+                _hpBar.Value = currentHp;
+            }
+        }
+
+        private void UpdateManaUI()
+        {
+            if (_mpBar != null && _attributes != null)
+            {
+                float maxMp = (float)_attributes.GetAttribute("mp");
+                float currentMp = (float)_attributes.GetAttribute("mp");
+                _mpBar.MaxValue = maxMp;
+                _mpBar.Value = currentMp;
+            }
+        }
+
+        /// <summary>
+        /// 添加经验值
+        /// </summary>
+        /// <param name="amount">经验值</param>
+        public void AddExperience(float amount)
+        {
+            _attributes?.AddExperience(amount);
+        }
+
+        /// <summary>
+        /// 受到伤害
+        /// </summary>
+        /// <param name="damage">伤害值</param>
+        public void TakeDamage(float damage)
+        {
+            if (_attributes != null)
+            {
+                float currentHp = (float)_attributes.GetAttribute("hp");
+                float newHp = Math.Max(0, currentHp - damage);
+                _attributes.SetAttribute("hp", newHp);
+                
+                if (newHp <= 0)
+                {
+                    Die();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 角色死亡
+        /// </summary>
+        private void Die()
+        {
+            GD.Print("玩家死亡！");
+            // 可以在这里添加死亡动画或游戏结束逻辑
+            QueueFree();
+        }
+
+        /// <summary>
+        /// 恢复生命值
+        /// </summary>
+        /// <param name="amount">恢复量</param>
+        public void Heal(float amount)
+        {
+            if (_attributes != null)
+            {
+                float maxHp = 100.0f; // 默认最大生命值
+                float currentHp = (float)_attributes.GetAttribute("hp");
+                float newHp = Math.Min(maxHp, currentHp + amount);
+                _attributes.SetAttribute("hp", newHp);
+            }
+        }
+
+        /// <summary>
+        /// 恢复魔法值
+        /// </summary>
+        /// <param name="amount">恢复量</param>
+        public void RestoreMana(float amount)
+        {
+            if (_attributes != null)
+            {
+                float maxMp = 50.0f; // 默认最大魔法值
+                float currentMp = (float)_attributes.GetAttribute("mp");
+                float newMp = Math.Min(maxMp, currentMp + amount);
+                _attributes.SetAttribute("mp", newMp);
+            }
         }
     }
 }

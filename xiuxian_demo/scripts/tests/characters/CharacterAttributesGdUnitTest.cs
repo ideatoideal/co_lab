@@ -3,8 +3,9 @@ using static GdUnit4.Assertions;
 using Godot;
 using System;
 using System.Collections.Generic;
+using XiuXianDemo.Characters;
 
-namespace XiuxianDemo.Tests.Characters
+namespace XiuXianDemo.Tests.Characters
 {
     [TestSuite]
     public class CharacterAttributesGdUnitTest
@@ -23,28 +24,8 @@ namespace XiuxianDemo.Tests.Characters
             // 初始化测试数据
             _testAttributes = new List<AttributeDefinition>
             {
-                new AttributeDefinition
-                {
-                    Id = "strength",
-                    Name = "力量",
-                    Type = AttributeType.Base,
-                    BaseValue = 10,
-                    GrowthRate = 0.5f,
-                    Description = "影响物理攻击",
-                    IconPath = "res://icons/strength.png",
-                    SortOrder = 1
-                },
-                new AttributeDefinition
-                {
-                    Id = "intelligence",
-                    Name = "智力",
-                    Type = AttributeType.Base,
-                    BaseValue = 8,
-                    GrowthRate = 0.6f,
-                    Description = "影响法术攻击",
-                    IconPath = "res://icons/intelligence.png",
-                    SortOrder = 2
-                }
+                new AttributeDefinition("strength", "力量", AttributeType.Base, 10, 0.5f, "影响物理攻击", "res://icons/strength.png", 1),
+                new AttributeDefinition("intelligence", "智力", AttributeType.Base, 8, 0.6f, "影响法术攻击", "res://icons/intelligence.png", 2)
             };
 
             // 注册事件

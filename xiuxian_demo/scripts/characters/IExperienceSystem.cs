@@ -1,23 +1,37 @@
-namespace XiuxianDemo
+using System;
+
+namespace XiuXianDemo.Characters
 {
     /// <summary>
-    /// 经验系统接口，定义经验相关的操作方法
+    /// 经验系统接口
     /// </summary>
     public interface IExperienceSystem
     {
-        // 获取总经验
-        float GetTotalExperience();
+        /// <summary>
+        /// 当前经验值
+        /// </summary>
+        float CurrentExperience { get; }
 
-        // 获取当前等级经验
-        float GetLevelExperience();
-
-        // 添加经验
+        /// <summary>
+        /// 添加经验
+        /// </summary>
+        /// <param name="amount">经验值</param>
         void AddExperience(float amount);
 
-        // 计算升级所需经验
-        float CalculateRequiredExperience(int level);
+        /// <summary>
+        /// 获取下一级所需经验
+        /// </summary>
+        /// <returns>所需经验值</returns>
+        float GetExperienceToNextLevel();
 
-        // 升级
-        void LevelUp();
+        /// <summary>
+        /// 经验值变化事件
+        /// </summary>
+        event Action<float> OnExperienceChanged;
+
+        /// <summary>
+        /// 升级事件
+        /// </summary>
+        event Action<int> OnLevelUp;
     }
 }

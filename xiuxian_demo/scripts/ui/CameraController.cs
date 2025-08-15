@@ -1,10 +1,7 @@
 using Godot;
 using System;
-using Godot;
 
-using Mathf = Godot.Mathf;
-
-namespace XiuxianDemo
+namespace XiuXianDemo.UI
 {
     /// <summary>
     /// 相机控制器类
@@ -28,7 +25,7 @@ namespace XiuxianDemo
         /// 相机偏移量
         /// </summary>
         [Export]
-        public Vector2 Offset { get; set; } = Vector2.Zero;
+        public Vector2 CameraOffset { get; set; } = Vector2.Zero;
         
         /// <summary>
         /// 是否限制相机边界
@@ -75,7 +72,7 @@ namespace XiuxianDemo
         {
             if (_target == null) return; // 检查目标是否存在
             
-            _targetPosition = _target.GlobalPosition + Offset; // 计算目标位置加上偏移量
+            _targetPosition = _target.GlobalPosition + CameraOffset; // 计算目标位置加上偏移量
             
             if (LimitBounds)
             {

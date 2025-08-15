@@ -1,126 +1,106 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-namespace XiuxianDemo
+namespace XiuXianDemo.Characters
 {
     /// <summary>
-    /// 等级系统实现类，处理等级相关的逻辑
+    /// 角色等级系统实现
     /// </summary>
     public class CharacterLevel : ILevelSystem
     {
         private int _currentLevel = 1;
-        private float _currentExperience = 0;
-        private float _experienceToNextLevel = 150;
-        private float[] _attributeGrowthRates = new float[6] { 20, 10, 2, 1, 1, 0.5f };
+        private Dictionary<string, float> _attributeGrowthRates;
 
-        // 当前等级
+        /// <summary>
+        /// 当前等级
+        /// </summary>
         public int CurrentLevel => _currentLevel;
 
-        // 当前经验
-        public float CurrentExperience => _currentExperience;
+        /// <summary>
+        /// 等级变化事件
+        /// </summary>
+        public event Action<int> OnLevelChanged;
 
-        // 升级所需经验
-        public float ExperienceToNextLevel => _experienceToNextLevel;
-
-        // 属性成长率
-        public float[] AttributeGrowthRates => _attributeGrowthRates;
-
-        // 获取当前等级
-        public int GetCurrentLevel()
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public CharacterLevel()
         {
+            InitializeAttributeGrowthRates();
+        }
+
+        /// <summary>
+        /// 初始化属性成长率
+        /// </summary>
+        private void InitializeAttributeGrowthRates()
+        {
+            _attributeGrowthRates = new Dictionary<string, float>
+            {
+                { "hp", 10.0f },
+                { "mp", 5.0f },
+                { "attack", 2.0f },
+                { "defense", 1.5f },
+                { "speed", 1.0f }
+            };
+        }
+
+        /// <summary>
+        /// 获取升级所需经验
+        /// </summary>
+        /// <param name="level">等级</param>
+        /// <returns>所需经验值</returns>
+        public int GetExperienceRequired(int level)
+        {
+            return level * level * 100;
+        }
+
+        /// <summary>
+        /// 检查是否可以升级
+        /// </summary>
+        /// <param name="currentExperience">当前经验值</param>
+        /// <returns>是否可以升级</returns>
+        public bool CanLevelUp(int currentExperience)
+        {
+            return currentExperience >= GetExperienceRequired(_currentLevel);
+        }
+
+        /// <summary>
+        /// 升级
+        /// </summary>
+        /// <returns>升级后的等级</returns>
+        public int LevelUp()
+        {
+            _currentLevel++;
+            OnLevelChanged?.Invoke(_currentLevel);
             return _currentLevel;
         }
 
-        // 设置当前等级
-        public void SetCurrentLevel(int currentLevel)
+        /// <summary>
+        /// 获取属性成长值
+        /// </summary>
+        /// <param name="attributeId">属性ID</param>
+        /// <returns>成长值</returns>
+        public float GetAttributeGrowth(string attributeId)
         {
-            if (currentLevel < 1)
+            if (_attributeGrowthRates.TryGetValue(attributeId.ToLower(), out float growth))
             {
-                GD.PrintErr("等级不能小于1");
-                return;
+                return growth;
             }
-
-            _currentLevel = currentLevel;
-            UpdateExperienceToNextLevel();
-            UpdateAttributeGrowthRates();
+            return 1.0f;
         }
 
-        // 获取当前经验
-        public float GetCurrentExperience()
+        /// <summary>
+        /// 设置当前等级（调试用）
+        /// </summary>
+        /// <param name="level">等级</param>
+        public void SetCurrentLevel(int level)
         {
-            return _currentExperience;
-        }
-
-        // 添加经验
-        public void AddExperience(float amount)
-        {
-            if (amount < 0)
+            if (level > 0)
             {
-                GD.PrintErr("经验值不能为负数");
-                return;
+                _currentLevel = level;
+                OnLevelChanged?.Invoke(_currentLevel);
             }
-
-            _currentExperience += amount;
-        }
-
-        // 检查是否可以升级
-        public bool CanLevelUp()
-        {
-            return _currentExperience >= _experienceToNextLevel;
-        }
-
-        // 升级
-        public bool LevelUp()
-        {
-            if (!CanLevelUp())
-            {
-                return false;
-            }
-
-            _currentExperience -= _experienceToNextLevel;
-            _currentLevel++;
-            UpdateExperienceToNextLevel();
-            UpdateAttributeGrowthRates();
-
-            return true;
-        }
-
-        // 获取升级所需经验
-        public float GetRequiredExperience(int level)
-        {
-            if (level < 1)
-            {
-                GD.PrintErr("等级不能小于1");
-                return 0;
-            }
-
-            // 经验公式：level * 100 + 50
-            return level * 100 + 50;
-        }
-
-        // 获取属性成长率
-        public float[] GetAttributeGrowthRates()
-        {
-            return _attributeGrowthRates;
-        }
-
-        // 更新升级所需经验
-        private void UpdateExperienceToNextLevel()
-        {
-            _experienceToNextLevel = GetRequiredExperience(_currentLevel);
-        }
-
-        // 更新属性成长率
-        private void UpdateAttributeGrowthRates()
-        {
-            // 根据等级调整属性成长率
-            // 这里只是示例，实际项目中可能需要从配置表加载
-            _attributeGrowthRates[0] = 20 + (_currentLevel - 1) * 2;    // 气血成长率
-            _attributeGrowthRates[1] = 10 + (_currentLevel - 1) * 1;    // 法力成长率
-            _attributeGrowthRates[2] = 2 + (_currentLevel - 1) * 0.5f;  // 攻击成长率
-            _attributeGrowthRates[3] = 1 + (_currentLevel - 1) * 0.3f;  // 防御成长率
-            _attributeGrowthRates[4] = 1 + (_currentLevel - 1) * 0.2f;  // 速度成长率
-            _attributeGrowthRates[5] = 0.5f + (_currentLevel - 1) * 0.1f; // 暴击成长率
         }
     }
 }

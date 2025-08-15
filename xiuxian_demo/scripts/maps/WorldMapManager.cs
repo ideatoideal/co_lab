@@ -1,10 +1,8 @@
 using Godot;
 using System;
-using Godot;
+using XiuXianDemo.Characters;
 
-using Mathf = Godot.Mathf;
-
-namespace XiuxianDemo
+namespace XiuXianDemo.Maps
 {
     /// <summary>
     /// 世界地图管理器
@@ -86,9 +84,13 @@ namespace XiuxianDemo
 
             // 设置相机边界
             Camera2D camera = GetViewport().GetCamera2D();
-            if (camera is CameraController cameraController)
+            if (camera != null)
             {
-                cameraController.SetBounds(new Rect2(0, 0, MapSize.X, MapSize.Y));
+                // 使用基本的相机边界设置
+                camera.LimitLeft = 0;
+                camera.LimitTop = 0;
+                camera.LimitRight = (int)MapSize.X;
+                camera.LimitBottom = (int)MapSize.Y;
             }
 
             GD.Print("WorldMapManager: Map background setup completed.");
